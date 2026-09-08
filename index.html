@@ -7,520 +7,803 @@
 
     <title>Mural Anônimo</title>
 
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
 
         /* =====================================================
-           CONFIGURAÇÃO GERAL
+           RESET
         ===================================================== */
 
         * {
             box-sizing: border-box;
-        }
-
-        html,
-        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            min-height: 100%;
-            background: #ffffff;
         }
+
+
+        /* =====================================================
+           VARIÁVEIS
+        ===================================================== */
+
+        :root {
+            --azul-principal: #69bde8;
+            --azul-claro: #eaf7ff;
+            --azul-muito-claro: #f6fcff;
+            --azul-escuro: #287aa8;
+            --texto: #294354;
+            --texto-claro: #708896;
+            --branco: #ffffff;
+            --borda: #c8e8f7;
+            --sombra: 0 12px 35px rgba(55, 145, 190, 0.12);
+        }
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            min-height: 100vh;
 
-            padding: 15px 10px;
-
-            color: #202020;
-
-            /*
-             * Fonte propositalmente parecida com a escrita
-             * da imagem.
-             */
             font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: var(--texto);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5fcff 0%,
+                    #eaf7ff 50%,
+                    #f8fdff 100%
+                );
         }
 
 
         /* =====================================================
-           MURAL PRINCIPAL
+           CABEÇALHO
         ===================================================== */
 
-        .mural {
-            position: relative;
-
-            width: 470px;
-            min-height: 670px;
-
-            padding: 18px 22px 24px;
-
-            background: #fff;
-
-            border: 3px solid #242424;
-
-            border-radius: 48px;
-
-            /*
-             * Pequena irregularidade para lembrar o desenho.
-             */
-            transform: rotate(-0.15deg);
-        }
-
-
-        /* =====================================================
-           DETALHE DOS DOIS CÍRCULOS
-           Igual ao canto esquerdo da imagem.
-        ===================================================== */
-
-        .bolinhas {
-            position: absolute;
-
-            left: 9px;
-            top: 158px;
-
-            width: 25px;
-            height: 35px;
-        }
-
-        .bolinha-1 {
-            position: absolute;
-
-            width: 14px;
-            height: 14px;
-
-            left: 0;
-            bottom: 0;
-
-            border: 3px solid #242424;
-
-            border-radius: 50%;
-        }
-
-        .bolinha-2 {
-            position: absolute;
-
-            width: 22px;
-            height: 22px;
-
-            right: -2px;
-            top: 0;
-
-            border: 3px solid #242424;
-
-            border-radius: 50%;
-        }
-
-
-        /* =====================================================
-           ÁREA SUPERIOR
-           Na imagem é o grande retângulo arredondado.
-        ===================================================== */
-
-        .postagem {
+        header {
             width: 100%;
-            height: 158px;
 
-            border: 3px solid #242424;
+            padding: 22px 30px;
 
-            border-radius: 34px;
+            background: rgba(255, 255, 255, 0.88);
 
-            background: #fff;
+            border-bottom: 1px solid var(--borda);
 
-            padding: 20px;
+            backdrop-filter: blur(10px);
 
-            font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+
+        .header-content {
+            max-width: 950px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .logo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 21px;
+
+            font-weight: 700;
+
+            color: var(--azul-escuro);
+        }
+
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--azul-claro);
+
+            font-size: 21px;
+        }
+
+
+        .anonimo {
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            background: #eef9ff;
+
+            color: var(--azul-escuro);
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           CONTAINER PRINCIPAL
+        ===================================================== */
+
+        main {
+            width: 100%;
+
+            max-width: 950px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+        }
+
+
+        /* =====================================================
+           TÍTULO
+        ===================================================== */
+
+        .intro {
+            text-align: center;
+
+            margin-bottom: 28px;
+        }
+
+
+        .intro h1 {
+            font-size: 32px;
+
+            color: var(--texto);
+
+            margin-bottom: 8px;
+        }
+
+
+        .intro p {
+            color: var(--texto-claro);
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           CARD DE NOVA POSTAGEM
+        ===================================================== */
+
+        .novo-post {
+            background: var(--branco);
+
+            border: 1px solid var(--borda);
+
+            border-radius: 28px;
+
+            padding: 24px;
+
+            box-shadow: var(--sombra);
+
+            margin-bottom: 30px;
+        }
+
+
+        .novo-post-topo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dff4ff,
+                    #bde6f8
+                );
 
             font-size: 20px;
-            line-height: 1.4;
+        }
 
-            color: #202020;
+
+        .novo-post-topo strong {
+            display: block;
+
+            font-size: 15px;
+        }
+
+
+        .novo-post-topo span {
+            color: var(--texto-claro);
+
+            font-size: 12px;
+        }
+
+
+        textarea {
+            width: 100%;
+
+            min-height: 125px;
+
+            resize: vertical;
+
+            border: 2px solid #d9edf7;
+
+            border-radius: 18px;
+
+            padding: 16px;
 
             outline: none;
 
-            resize: none;
+            font-family: inherit;
+
+            font-size: 15px;
+
+            color: var(--texto);
+
+            background: #fbfeff;
+
+            transition: 0.2s;
+        }
+
+
+        textarea:focus {
+            border-color: var(--azul-principal);
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(105, 189, 232, 0.12);
+        }
+
+
+        textarea::placeholder {
+            color: #9bb0bb;
+        }
+
+
+        /* =====================================================
+           OPÇÕES DA POSTAGEM
+        ===================================================== */
+
+        .post-opcoes {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 12px;
+        }
+
+
+        .input-hashtags {
+            flex: 1;
+
+            border: 2px solid #d9edf7;
+
+            border-radius: 13px;
+
+            padding: 11px 14px;
+
+            outline: none;
+
+            color: var(--texto);
+
+            font-family: inherit;
+
+            background: #fbfeff;
+        }
+
+
+        .input-emoji {
+            width: 60px;
+
+            text-align: center;
+
+            border: 2px solid #d9edf7;
+
+            border-radius: 13px;
+
+            font-size: 20px;
+
+            outline: none;
+
+            background: #fbfeff;
+        }
+
+
+        .publicar {
+            margin-top: 15px;
+
+            width: 100%;
+
+            border: none;
+
+            border-radius: 14px;
+
+            padding: 13px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #69bde8,
+                    #4ba9da
+                );
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 6px 15px rgba(75, 169, 218, 0.22);
+        }
+
+
+        .publicar:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 9px 20px rgba(75, 169, 218, 0.3);
+        }
+
+
+        .publicar:active {
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           FEED
+        ===================================================== */
+
+        #posts {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 22px;
+        }
+
+
+        /* =====================================================
+           POST
+        ===================================================== */
+
+        .post {
+            background: white;
+
+            border: 1px solid var(--borda);
+
+            border-radius: 28px;
+
+            padding: 22px;
+
+            box-shadow: var(--sombra);
+        }
+
+
+        .post-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+
+        .post-autor {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            background: var(--azul-claro);
+
+            font-size: 19px;
+        }
+
+
+        .post-autor-info strong {
+            font-size: 14px;
 
             display: block;
         }
 
-        .postagem::placeholder {
-            color: #555;
-            opacity: 1;
+
+        .post-autor-info span {
+            font-size: 11px;
+
+            color: var(--texto-claro);
         }
 
-        .postagem:focus {
-            outline: none;
+
+        .post-emoji {
+            font-size: 25px;
         }
 
 
         /* =====================================================
-           LINHA HASHTAGS + LIKE
+           TEXTO DO POST
         ===================================================== */
 
-        .linha-acoes {
-            width: 100%;
+        .post-texto {
+            padding: 20px;
 
-            display: flex;
-            align-items: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f7fcff,
+                    #eef9ff
+                );
 
-            gap: 7px;
+            border: 1px solid #d8eef8;
 
-            margin-top: 10px;
-
-            padding-left: 1px;
-            padding-right: 36px;
-        }
-
-
-        /* HASHTAGS */
-
-        .hashtags-input {
-            flex: 1;
-
-            height: 54px;
-
-            border: 3px solid #242424;
-
-            border-radius: 16px;
-
-            padding: 8px 17px;
-
-            background: #fff;
-
-            font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
-
-            font-size: 18px;
-
-            color: #202020;
-
-            outline: none;
-        }
-
-        .hashtags-input::placeholder {
-            color: #202020;
-            opacity: 1;
-        }
-
-
-        /* LIKE */
-
-        .botao-like {
-            width: 70px;
-            height: 54px;
-
-            border: 3px solid #242424;
-
-            border-radius: 15px;
-
-            background: #fff;
-
-            font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
+            border-radius: 20px;
 
             font-size: 17px;
 
-            color: #202020;
+            line-height: 1.6;
 
-            cursor: pointer;
-
-            padding: 0;
-        }
-
-        .botao-like:hover {
-            background: #fafafa;
-        }
-
-        .botao-like:active {
-            transform: scale(0.97);
-        }
-
-
-        /* =====================================================
-           ÁREA DE COMENTÁRIOS
-           Grande caixa exatamente abaixo das ações.
-        ===================================================== */
-
-        .comentarios-box {
-            width: 100%;
-
-            height: 280px;
-
-            margin-top: 17px;
-
-            border: 3px solid #242424;
-
-            border-radius: 39px;
-
-            background: #fff;
-
-            position: relative;
-
-            overflow: hidden;
-        }
-
-
-        /* título central */
-
-        .comentarios-titulo {
-            position: absolute;
-
-            top: 122px;
-            left: 0;
-
-            width: 100%;
-
-            text-align: center;
-
-            font-size: 22px;
-
-            color: #202020;
-        }
-
-
-        /* quando existirem comentários */
-
-        .lista-comentarios {
-            position: absolute;
-
-            top: 25px;
-            left: 25px;
-            right: 25px;
-            bottom: 62px;
-
-            overflow-y: auto;
-
-            display: none;
-
-            flex-direction: column;
-
-            gap: 8px;
-        }
-
-        .lista-comentarios.tem-comentarios {
-            display: flex;
-        }
-
-        .lista-comentarios.tem-comentarios + .comentarios-titulo {
-            display: none;
-        }
-
-
-        .comentario {
-            padding: 7px 10px;
-
-            border-bottom: 1px solid #999;
-
-            font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
-
-            font-size: 15px;
+            white-space: pre-wrap;
 
             word-break: break-word;
         }
 
 
         /* =====================================================
-           CAMPO DE NOVO COMENTÁRIO
+           HASHTAGS + LIKE
         ===================================================== */
 
-        .novo-comentario {
-            position: absolute;
+        .post-acoes {
+            display: flex;
 
-            left: 25px;
-            right: 25px;
-            bottom: 12px;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 13px;
+        }
+
+
+        .hashtags {
+            flex: 1;
 
             display: flex;
+
+            flex-wrap: wrap;
 
             gap: 6px;
         }
 
-        .novo-comentario input {
-            flex: 1;
 
-            height: 38px;
+        .tag {
+            padding: 6px 10px;
 
-            border: 2px solid #242424;
+            border-radius: 20px;
+
+            background: #eaf7ff;
+
+            color: #398db8;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        .like-btn {
+            border: 1px solid #cbe8f6;
+
+            background: white;
+
+            color: #4e7588;
 
             border-radius: 13px;
 
-            padding: 5px 10px;
+            padding: 8px 13px;
 
-            font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
+            cursor: pointer;
 
-            outline: none;
+            transition: 0.2s;
         }
 
-        .novo-comentario button {
-            height: 38px;
 
-            padding: 0 10px;
+        .like-btn:hover {
+            background: #fff1f4;
 
-            border: 2px solid #242424;
+            border-color: #ffd3dc;
+        }
+
+
+        /* =====================================================
+           COMENTÁRIOS
+        ===================================================== */
+
+        .comentarios {
+            margin-top: 18px;
+
+            border: 1px solid #dceef7;
+
+            border-radius: 20px;
+
+            padding: 17px;
+
+            background: #fcfeff;
+        }
+
+
+        .comentarios-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 12px;
+        }
+
+
+        .comentarios-header strong {
+            font-size: 14px;
+        }
+
+
+        .contador {
+            color: var(--texto-claro);
+
+            font-size: 12px;
+        }
+
+
+        .lista-comentarios {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            max-height: 190px;
+
+            overflow-y: auto;
+
+            margin-bottom: 12px;
+        }
+
+
+        .comentario {
+            background: #eef8fd;
 
             border-radius: 12px;
 
-            background: #fff;
+            padding: 9px 11px;
 
-            font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
+            font-size: 13px;
+
+            color: #4b6877;
+
+            word-break: break-word;
+        }
+
+
+        .sem-comentarios {
+            color: #9aaeb8;
+
+            text-align: center;
+
+            padding: 10px;
+
+            font-size: 13px;
+        }
+
+
+        .comentario-form {
+            display: flex;
+
+            gap: 8px;
+        }
+
+
+        .comentario-form input {
+            flex: 1;
+
+            border: 1px solid #cfe7f3;
+
+            border-radius: 12px;
+
+            padding: 10px;
+
+            outline: none;
+
+            font-family: inherit;
+
+            color: var(--texto);
+
+            background: white;
+        }
+
+
+        .comentario-form input:focus {
+            border-color: var(--azul-principal);
+        }
+
+
+        .comentario-form button {
+            border: none;
+
+            border-radius: 12px;
+
+            padding: 0 15px;
+
+            background: var(--azul-principal);
+
+            color: white;
+
+            font-weight: bold;
 
             cursor: pointer;
         }
 
 
         /* =====================================================
-           EMOJI
-           Caixa inferior da referência.
+           ESTADO VAZIO
         ===================================================== */
 
-        .emoji-area {
-            width: 100%;
-
-            height: 85px;
-
-            margin-top: 19px;
-
-            border: 3px solid #242424;
-
-            border-radius: 22px;
-
-            background: #fff;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            position: relative;
-        }
-
-
-        .emoji {
-            width: 100%;
-            height: 100%;
-
-            border: none;
-            outline: none;
-
-            background: transparent;
-
+        .vazio {
             text-align: center;
 
-            font-size: 32px;
+            background: white;
 
-            font-family:
-                "Comic Sans MS",
-                "Chalkboard SE",
-                "Segoe Print",
-                cursive;
+            border: 1px dashed #b9ddec;
+
+            border-radius: 25px;
+
+            padding: 45px 20px;
+
+            color: var(--texto-claro);
+        }
+
+
+        .vazio .icone {
+            font-size: 35px;
+
+            margin-bottom: 10px;
         }
 
 
         /* =====================================================
-           BOTÃO PUBLICAR
-           Fica discreto, seguindo a estética do desenho.
+           CARREGANDO
         ===================================================== */
 
-        .publicar {
-            position: absolute;
-
-            top: 181px;
-            right: 30px;
-
-            width: 0;
-            height: 0;
-
-            opacity: 0;
-
-            pointer-events: none;
-        }
-
-
-        /* =====================================================
-           MENSAGEM DE ERRO
-        ===================================================== */
-
-        .erro {
-            position: absolute;
-
-            left: 25px;
-            right: 25px;
-
-            bottom: 4px;
-
+        .carregando {
             text-align: center;
 
-            color: #222;
+            color: var(--texto-claro);
 
-            font-family: Arial, sans-serif;
-
-            font-size: 12px;
+            padding: 30px;
         }
 
 
         /* =====================================================
-           RESPONSIVO
+           RESPONSIVIDADE
         ===================================================== */
 
-        @media (max-width: 520px) {
+        @media (max-width: 600px) {
 
-            body {
-                padding: 8px 5px;
+            header {
+                padding: 17px 18px;
             }
 
-            .mural {
+
+            .header-content {
                 width: 100%;
-
-                min-height: 670px;
-
-                padding-left: 18px;
-                padding-right: 18px;
-
-                border-radius: 38px;
             }
 
-            .bolinhas {
+
+            .anonimo {
                 display: none;
             }
 
-            .linha-acoes {
-                padding-right: 25px;
+
+            main {
+                margin: 25px auto;
+
+                padding: 0 12px;
             }
 
-            .postagem {
-                height: 158px;
+
+            .intro h1 {
+                font-size: 26px;
             }
 
-            .comentarios-box {
-                height: 280px;
+
+            .novo-post,
+            .post {
+                padding: 17px;
+
+                border-radius: 22px;
+            }
+
+
+            .post-opcoes {
+                flex-wrap: wrap;
+            }
+
+
+            .input-hashtags {
+                width: 100%;
+
+                flex-basis: 100%;
+            }
+
+
+            .input-emoji {
+                width: 60px;
+            }
+
+
+            .post-acoes {
+                align-items: flex-start;
+            }
+
+
+            .like-btn {
+                white-space: nowrap;
             }
         }
 
@@ -530,131 +813,152 @@
 
 <body>
 
-    <main class="mural">
 
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
 
-        <!-- =================================================
-             DETALHE DOS CÍRCULOS
-        ================================================== -->
+    <header>
 
-        <div class="bolinhas">
-            <div class="bolinha-1"></div>
-            <div class="bolinha-2"></div>
-        </div>
+        <div class="header-content">
 
+            <div class="logo">
 
-        <!-- =================================================
-             POSTAGEM
-        ================================================== -->
+                <div class="logo-icon">
+                    💬
+                </div>
 
-        <textarea
-            id="texto"
-            class="postagem"
-            placeholder=""
-        ></textarea>
+                <span>
+                    Mural Anônimo
+                </span>
 
-
-        <!-- =================================================
-             HASHTAGS + LIKE
-        ================================================== -->
-
-        <div class="linha-acoes">
-
-            <input
-                id="hashtags"
-                class="hashtags-input"
-                type="text"
-                placeholder="hastigs"
-            >
-
-            <button
-                id="likeAtual"
-                class="botao-like"
-                type="button"
-            >
-                like
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             COMENTÁRIOS
-        ================================================== -->
-
-        <section class="comentarios-box">
-
-            <div
-                id="listaComentarios"
-                class="lista-comentarios"
-            ></div>
-
-            <div
-                id="tituloComentarios"
-                class="comentarios-titulo"
-            >
-                comentarios
             </div>
 
 
-            <div class="novo-comentario">
+            <div class="anonimo">
+                🔒 100% anônimo
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main>
+
+
+        <div class="intro">
+
+            <h1>
+                O que está passando pela sua cabeça?
+            </h1>
+
+            <p>
+                Compartilhe seus pensamentos com a comunidade.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             NOVA POSTAGEM
+        ================================================== -->
+
+        <section class="novo-post">
+
+
+            <div class="novo-post-topo">
+
+                <div class="avatar">
+                    👤
+                </div>
+
+                <div>
+
+                    <strong>
+                        Você está anônimo
+                    </strong>
+
+                    <span>
+                        Sua identidade não será exibida
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <textarea
+                id="texto"
+                placeholder="Escreva alguma coisa..."
+            ></textarea>
+
+
+            <div class="post-opcoes">
 
                 <input
-                    id="novoComentario"
+                    id="hashtags"
+                    class="input-hashtags"
                     type="text"
-                    placeholder="comentário..."
+                    placeholder="#hashtags #opcional"
                 >
 
-                <button
-                    type="button"
-                    onclick="adicionarComentario()"
+
+                <input
+                    id="emoji"
+                    class="input-emoji"
+                    type="text"
+                    value="😍"
+                    maxlength="2"
                 >
-                    +
-                </button>
 
             </div>
+
+
+            <button
+                class="publicar"
+                onclick="publicarPost()"
+            >
+                Publicar anonimamente
+            </button>
+
+
+            <div
+                id="erro"
+                style="
+                    text-align:center;
+                    color:#d65c6c;
+                    font-size:13px;
+                    margin-top:10px;
+                "
+            ></div>
+
 
         </section>
 
 
         <!-- =================================================
-             EMOJI
+             FEED
         ================================================== -->
 
-        <div class="emoji-area">
+        <section id="posts">
 
-            <input
-                id="emoji"
-                class="emoji"
-                type="text"
-                value="😍"
-                maxlength="2"
-            >
+            <div class="carregando">
+                Carregando mural...
+            </div>
 
-        </div>
+        </section>
 
-
-        <!-- =================================================
-             ERRO
-        ================================================== -->
-
-        <div
-            id="erro"
-            class="erro"
-        ></div>
-
-
-        <!-- Botão invisível usado pelo JS -->
-        <button
-            id="publicar"
-            class="publicar"
-            onclick="publicarPost()"
-        ></button>
 
     </main>
 
 
     <script>
+
 
         /* =====================================================
            SUPABASE
@@ -662,6 +966,7 @@
 
         const SUPABASE_URL =
             "COLOQUE_AQUI_SUA_URL";
+
 
         const SUPABASE_ANON_KEY =
             "COLOQUE_AQUI_SUA_ANON_KEY";
@@ -674,24 +979,13 @@
             );
 
 
-        /*
-         * Guarda o post que está sendo visualizado.
-         *
-         * A imagem representa uma postagem por vez,
-         * então vamos manter essa lógica.
-         */
-        let postAtual = null;
-
-
         /* =====================================================
            ESCAPAR HTML
         ===================================================== */
 
         function escapeHTML(texto) {
 
-            if (!texto) {
-                return "";
-            }
+            if (!texto) return "";
 
             return texto
                 .replaceAll("&", "&amp;")
@@ -703,137 +997,266 @@
 
 
         /* =====================================================
-           CARREGAR POSTAGEM
+           CARREGAR POSTS
         ===================================================== */
 
-        async function carregarPost() {
+        async function carregarPosts() {
 
-            const { data, error } =
+            const container =
+                document.getElementById("posts");
+
+
+            const {
+                data,
+                error
+            } =
                 await supabaseClient
                     .from("postagens")
                     .select("*")
-                    .order("created_at", {
-                        ascending: false
-                    })
-                    .limit(1)
-                    .maybeSingle();
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
 
 
             if (error) {
 
                 console.error(error);
 
-                return;
-            }
-
-
-            if (!data) {
-
-                postAtual = null;
-
-                document.getElementById("texto").value = "";
-
-                document.getElementById("hashtags").value = "";
-
-                document.getElementById("emoji").value = "😍";
-
-                document.getElementById("likeAtual").textContent =
-                    "like";
+                container.innerHTML = `
+                    <div class="vazio">
+                        <div class="icone">😕</div>
+                        Não foi possível carregar o mural.
+                    </div>
+                `;
 
                 return;
             }
 
 
-            postAtual = data;
+            if (!data || data.length === 0) {
+
+                container.innerHTML = `
+                    <div class="vazio">
+
+                        <div class="icone">
+                            💭
+                        </div>
+
+                        <strong>
+                            O mural está vazio
+                        </strong>
+
+                        <p style="margin-top:5px;">
+                            Seja a primeira pessoa a compartilhar alguma coisa!
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+            }
 
 
-            /*
-             * Texto
-             */
-
-            document.getElementById("texto").value =
-                data.texto || "";
-
-
-            /*
-             * Hashtags
-             */
-
-            document.getElementById("hashtags").value =
-                Array.isArray(data.hashtags)
-                    ? data.hashtags.join(" ")
-                    : "";
-
-
-            /*
-             * Emoji
-             */
-
-            document.getElementById("emoji").value =
-                data.emoji || "😍";
-
-
-            /*
-             * Like
-             */
-
-            document.getElementById("likeAtual").textContent =
-                `like ${data.likes || 0}`;
-
-
-            /*
-             * Comentários
-             */
-
-            mostrarComentarios(
-                Array.isArray(data.comentarios)
-                    ? data.comentarios
-                    : []
-            );
+            container.innerHTML =
+                data
+                    .map(post => criarPost(post))
+                    .join("");
         }
 
 
         /* =====================================================
-           MOSTRAR COMENTÁRIOS
+           CRIAR HTML DO POST
         ===================================================== */
 
-        function mostrarComentarios(comentarios) {
+        function criarPost(post) {
 
-            const lista =
-                document.getElementById(
-                    "listaComentarios"
-                );
-
-
-            if (!comentarios.length) {
-
-                lista.innerHTML = "";
-
-                lista.classList.remove(
-                    "tem-comentarios"
-                );
-
-                return;
-            }
+            const comentarios =
+                Array.isArray(post.comentarios)
+                    ? post.comentarios
+                    : [];
 
 
-            lista.classList.add(
-                "tem-comentarios"
-            );
+            const hashtags =
+                Array.isArray(post.hashtags)
+                    ? post.hashtags
+                    : [];
 
 
-            lista.innerHTML =
-                comentarios
-                    .map(comentario => {
+            const tagsHTML =
+                hashtags
+                    .map(tag => `
+                        <span class="tag">
+                            ${escapeHTML(tag)}
+                        </span>
+                    `)
+                    .join("");
 
-                        return `
+
+            const comentariosHTML =
+                comentarios.length
+                    ?
+
+                    comentarios
+                        .map(comentario => `
                             <div class="comentario">
                                 ${escapeHTML(comentario)}
                             </div>
-                        `;
+                        `)
+                        .join("")
 
-                    })
-                    .join("");
+                    :
+
+                    `
+                        <div class="sem-comentarios">
+                            Nenhum comentário ainda 💬
+                        </div>
+                    `;
+
+
+            const data =
+                new Date(post.created_at);
+
+
+            const tempo =
+                data.toLocaleString(
+                    "pt-BR",
+                    {
+                        day: "2-digit",
+                        month: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+
+            return `
+
+                <article class="post">
+
+
+                    <div class="post-header">
+
+
+                        <div class="post-autor">
+
+
+                            <div class="post-avatar">
+                                ${escapeHTML(post.emoji || "😍")}
+                            </div>
+
+
+                            <div class="post-autor-info">
+
+                                <strong>
+                                    Pessoa anônima
+                                </strong>
+
+                                <span>
+                                    ${tempo}
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="post-emoji">
+                            💭
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="post-texto">
+                        ${escapeHTML(post.texto)}
+                    </div>
+
+
+                    <div class="post-acoes">
+
+
+                        <div class="hashtags">
+
+                            ${tagsHTML}
+
+                        </div>
+
+
+                        <button
+                            class="like-btn"
+                            onclick="
+                                darLike(
+                                    ${post.id},
+                                    ${post.likes || 0}
+                                )
+                            "
+                        >
+
+                            ❤️
+                            ${post.likes || 0}
+
+                        </button>
+
+
+                    </div>
+
+
+                    <div class="comentarios">
+
+
+                        <div class="comentarios-header">
+
+                            <strong>
+                                💬 Comentários
+                            </strong>
+
+                            <span class="contador">
+                                ${comentarios.length}
+                            </span>
+
+                        </div>
+
+
+                        <div class="lista-comentarios">
+
+                            ${comentariosHTML}
+
+                        </div>
+
+
+                        <div class="comentario-form">
+
+                            <input
+                                id="comentario-${post.id}"
+                                type="text"
+                                placeholder="Escreva um comentário..."
+                            >
+
+
+                            <button
+                                onclick="
+                                    adicionarComentario(
+                                        ${post.id}
+                                    )
+                                "
+                            >
+                                Enviar
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+            `;
         }
 
 
@@ -843,36 +1266,30 @@
 
         async function publicarPost() {
 
-            const texto =
-                document
-                    .getElementById("texto")
-                    .value
-                    .trim();
+            const textoInput =
+                document.getElementById("texto");
 
 
-            const hashtagsTexto =
-                document
-                    .getElementById("hashtags")
-                    .value
-                    .trim();
+            const hashtagsInput =
+                document.getElementById("hashtags");
 
 
-            const emoji =
-                document
-                    .getElementById("emoji")
-                    .value
-                    .trim()
-                    || "😍";
+            const emojiInput =
+                document.getElementById("emoji");
 
 
             const erro =
                 document.getElementById("erro");
 
 
+            const texto =
+                textoInput.value.trim();
+
+
             if (!texto) {
 
                 erro.textContent =
-                    "Escreva algo antes de publicar.";
+                    "Escreva alguma coisa antes de publicar.";
 
                 return;
             }
@@ -882,12 +1299,20 @@
 
 
             const hashtags =
-                hashtagsTexto
+                hashtagsInput.value
+                    .trim()
                     .split(/\s+/)
                     .filter(Boolean);
 
 
-            const { error } =
+            const emoji =
+                emojiInput.value.trim()
+                || "😍";
+
+
+            const {
+                error
+            } =
                 await supabaseClient
                     .from("postagens")
                     .insert({
@@ -910,13 +1335,20 @@
                 console.error(error);
 
                 erro.textContent =
-                    "Não foi possível publicar.";
+                    "Não foi possível publicar a postagem.";
 
                 return;
             }
 
 
-            await carregarPost();
+            textoInput.value = "";
+
+            hashtagsInput.value = "";
+
+            emojiInput.value = "😍";
+
+
+            carregarPosts();
         }
 
 
@@ -924,69 +1356,47 @@
            LIKE
         ===================================================== */
 
-        document
-            .getElementById("likeAtual")
-            .addEventListener("click", async function () {
+        async function darLike(
+            id,
+            likesAtuais
+        ) {
 
-                if (!postAtual) {
-
-                    /*
-                     * Se ainda não existir postagem,
-                     * cria uma automaticamente usando
-                     * o conteúdo atual.
-                     */
-
-                    await publicarPost();
-
-                    return;
-                }
+            const novoValor =
+                (likesAtuais || 0) + 1;
 
 
-                const novoLike =
-                    (postAtual.likes || 0) + 1;
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("postagens")
+                    .update({
+                        likes: novoValor
+                    })
+                    .eq("id", id);
 
 
-                const { error } =
-                    await supabaseClient
-                        .from("postagens")
-                        .update({
-                            likes: novoLike
-                        })
-                        .eq("id", postAtual.id);
+            if (error) {
+
+                console.error(error);
+
+                return;
+            }
 
 
-                if (error) {
-
-                    console.error(error);
-
-                    return;
-                }
-
-
-                postAtual.likes = novoLike;
-
-
-                document
-                    .getElementById("likeAtual")
-                    .textContent =
-                    `like ${novoLike}`;
-            });
+            carregarPosts();
+        }
 
 
         /* =====================================================
            COMENTÁRIO
         ===================================================== */
 
-        async function adicionarComentario() {
-
-            if (!postAtual) {
-                return;
-            }
-
+        async function adicionarComentario(id) {
 
             const input =
                 document.getElementById(
-                    "novoComentario"
+                    `comentario-${id}`
                 );
 
 
@@ -999,22 +1409,15 @@
             }
 
 
-            const comentarios =
-                Array.isArray(postAtual.comentarios)
-                    ? [...postAtual.comentarios]
-                    : [];
-
-
-            comentarios.push(texto);
-
-
-            const { error } =
+            const {
+                data,
+                error
+            } =
                 await supabaseClient
                     .from("postagens")
-                    .update({
-                        comentarios: comentarios
-                    })
-                    .eq("id", postAtual.id);
+                    .select("comentarios")
+                    .eq("id", id)
+                    .single();
 
 
             if (error) {
@@ -1025,60 +1428,72 @@
             }
 
 
-            postAtual.comentarios =
-                comentarios;
+            const comentarios =
+                Array.isArray(data.comentarios)
+                    ? [...data.comentarios]
+                    : [];
+
+
+            comentarios.push(texto);
+
+
+            const resultado =
+                await supabaseClient
+                    .from("postagens")
+                    .update({
+                        comentarios: comentarios
+                    })
+                    .eq("id", id);
+
+
+            if (resultado.error) {
+
+                console.error(
+                    resultado.error
+                );
+
+                return;
+            }
 
 
             input.value = "";
 
 
-            mostrarComentarios(
-                comentarios
-            );
+            carregarPosts();
         }
 
 
         /* =====================================================
-           CTRL + ENTER PUBLICA
+           ENTER PARA COMENTAR
         ===================================================== */
 
-        document
-            .getElementById("texto")
-            .addEventListener(
-                "keydown",
-                function (event) {
+        document.addEventListener(
+            "keydown",
+            function(event) {
 
-                    if (
-                        event.ctrlKey &&
-                        event.key === "Enter"
-                    ) {
+                if (
+                    event.target.matches(
+                        ".comentario-form input"
+                    )
+                    &&
+                    event.key === "Enter"
+                ) {
 
-                        publicarPost();
+                    const id =
+                        event.target.id
+                            .replace(
+                                "comentario-",
+                                ""
+                            );
 
-                    }
 
+                    adicionarComentario(
+                        Number(id)
+                    );
                 }
-            );
 
-
-        /* =====================================================
-           ENTER NO COMENTÁRIO
-        ===================================================== */
-
-        document
-            .getElementById("novoComentario")
-            .addEventListener(
-                "keydown",
-                function (event) {
-
-                    if (event.key === "Enter") {
-
-                        adicionarComentario();
-
-                    }
-
-                }
-            );
+            }
+        );
 
 
         /* =====================================================
@@ -1086,7 +1501,7 @@
         ===================================================== */
 
         supabaseClient
-            .channel("mural-postagens")
+            .channel("mural-em-tempo-real")
             .on(
                 "postgres_changes",
                 {
@@ -1094,9 +1509,9 @@
                     schema: "public",
                     table: "postagens"
                 },
-                function () {
+                function() {
 
-                    carregarPost();
+                    carregarPosts();
 
                 }
             )
@@ -1107,11 +1522,10 @@
            INICIALIZAÇÃO
         ===================================================== */
 
-        carregarPost();
+        carregarPosts();
 
     </script>
 
 </body>
 
 </html>
-
