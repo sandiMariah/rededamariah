@@ -1,11 +1,1117 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PinkPinky</title>
+
+    <title>Mural Anônimo</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        /* =====================================================
+           CONFIGURAÇÃO GERAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: #ffffff;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+
+            padding: 15px 10px;
+
+            color: #202020;
+
+            /*
+             * Fonte propositalmente parecida com a escrita
+             * da imagem.
+             */
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+        }
+
+
+        /* =====================================================
+           MURAL PRINCIPAL
+        ===================================================== */
+
+        .mural {
+            position: relative;
+
+            width: 470px;
+            min-height: 670px;
+
+            padding: 18px 22px 24px;
+
+            background: #fff;
+
+            border: 3px solid #242424;
+
+            border-radius: 48px;
+
+            /*
+             * Pequena irregularidade para lembrar o desenho.
+             */
+            transform: rotate(-0.15deg);
+        }
+
+
+        /* =====================================================
+           DETALHE DOS DOIS CÍRCULOS
+           Igual ao canto esquerdo da imagem.
+        ===================================================== */
+
+        .bolinhas {
+            position: absolute;
+
+            left: 9px;
+            top: 158px;
+
+            width: 25px;
+            height: 35px;
+        }
+
+        .bolinha-1 {
+            position: absolute;
+
+            width: 14px;
+            height: 14px;
+
+            left: 0;
+            bottom: 0;
+
+            border: 3px solid #242424;
+
+            border-radius: 50%;
+        }
+
+        .bolinha-2 {
+            position: absolute;
+
+            width: 22px;
+            height: 22px;
+
+            right: -2px;
+            top: 0;
+
+            border: 3px solid #242424;
+
+            border-radius: 50%;
+        }
+
+
+        /* =====================================================
+           ÁREA SUPERIOR
+           Na imagem é o grande retângulo arredondado.
+        ===================================================== */
+
+        .postagem {
+            width: 100%;
+            height: 158px;
+
+            border: 3px solid #242424;
+
+            border-radius: 34px;
+
+            background: #fff;
+
+            padding: 20px;
+
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+
+            font-size: 20px;
+            line-height: 1.4;
+
+            color: #202020;
+
+            outline: none;
+
+            resize: none;
+
+            display: block;
+        }
+
+        .postagem::placeholder {
+            color: #555;
+            opacity: 1;
+        }
+
+        .postagem:focus {
+            outline: none;
+        }
+
+
+        /* =====================================================
+           LINHA HASHTAGS + LIKE
+        ===================================================== */
+
+        .linha-acoes {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 10px;
+
+            padding-left: 1px;
+            padding-right: 36px;
+        }
+
+
+        /* HASHTAGS */
+
+        .hashtags-input {
+            flex: 1;
+
+            height: 54px;
+
+            border: 3px solid #242424;
+
+            border-radius: 16px;
+
+            padding: 8px 17px;
+
+            background: #fff;
+
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+
+            font-size: 18px;
+
+            color: #202020;
+
+            outline: none;
+        }
+
+        .hashtags-input::placeholder {
+            color: #202020;
+            opacity: 1;
+        }
+
+
+        /* LIKE */
+
+        .botao-like {
+            width: 70px;
+            height: 54px;
+
+            border: 3px solid #242424;
+
+            border-radius: 15px;
+
+            background: #fff;
+
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+
+            font-size: 17px;
+
+            color: #202020;
+
+            cursor: pointer;
+
+            padding: 0;
+        }
+
+        .botao-like:hover {
+            background: #fafafa;
+        }
+
+        .botao-like:active {
+            transform: scale(0.97);
+        }
+
+
+        /* =====================================================
+           ÁREA DE COMENTÁRIOS
+           Grande caixa exatamente abaixo das ações.
+        ===================================================== */
+
+        .comentarios-box {
+            width: 100%;
+
+            height: 280px;
+
+            margin-top: 17px;
+
+            border: 3px solid #242424;
+
+            border-radius: 39px;
+
+            background: #fff;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* título central */
+
+        .comentarios-titulo {
+            position: absolute;
+
+            top: 122px;
+            left: 0;
+
+            width: 100%;
+
+            text-align: center;
+
+            font-size: 22px;
+
+            color: #202020;
+        }
+
+
+        /* quando existirem comentários */
+
+        .lista-comentarios {
+            position: absolute;
+
+            top: 25px;
+            left: 25px;
+            right: 25px;
+            bottom: 62px;
+
+            overflow-y: auto;
+
+            display: none;
+
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .lista-comentarios.tem-comentarios {
+            display: flex;
+        }
+
+        .lista-comentarios.tem-comentarios + .comentarios-titulo {
+            display: none;
+        }
+
+
+        .comentario {
+            padding: 7px 10px;
+
+            border-bottom: 1px solid #999;
+
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+
+            font-size: 15px;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           CAMPO DE NOVO COMENTÁRIO
+        ===================================================== */
+
+        .novo-comentario {
+            position: absolute;
+
+            left: 25px;
+            right: 25px;
+            bottom: 12px;
+
+            display: flex;
+
+            gap: 6px;
+        }
+
+        .novo-comentario input {
+            flex: 1;
+
+            height: 38px;
+
+            border: 2px solid #242424;
+
+            border-radius: 13px;
+
+            padding: 5px 10px;
+
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+
+            outline: none;
+        }
+
+        .novo-comentario button {
+            height: 38px;
+
+            padding: 0 10px;
+
+            border: 2px solid #242424;
+
+            border-radius: 12px;
+
+            background: #fff;
+
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           EMOJI
+           Caixa inferior da referência.
+        ===================================================== */
+
+        .emoji-area {
+            width: 100%;
+
+            height: 85px;
+
+            margin-top: 19px;
+
+            border: 3px solid #242424;
+
+            border-radius: 22px;
+
+            background: #fff;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+        }
+
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            text-align: center;
+
+            font-size: 32px;
+
+            font-family:
+                "Comic Sans MS",
+                "Chalkboard SE",
+                "Segoe Print",
+                cursive;
+        }
+
+
+        /* =====================================================
+           BOTÃO PUBLICAR
+           Fica discreto, seguindo a estética do desenho.
+        ===================================================== */
+
+        .publicar {
+            position: absolute;
+
+            top: 181px;
+            right: 30px;
+
+            width: 0;
+            height: 0;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           MENSAGEM DE ERRO
+        ===================================================== */
+
+        .erro {
+            position: absolute;
+
+            left: 25px;
+            right: 25px;
+
+            bottom: 4px;
+
+            text-align: center;
+
+            color: #222;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 520px) {
+
+            body {
+                padding: 8px 5px;
+            }
+
+            .mural {
+                width: 100%;
+
+                min-height: 670px;
+
+                padding-left: 18px;
+                padding-right: 18px;
+
+                border-radius: 38px;
+            }
+
+            .bolinhas {
+                display: none;
+            }
+
+            .linha-acoes {
+                padding-right: 25px;
+            }
+
+            .postagem {
+                height: 158px;
+            }
+
+            .comentarios-box {
+                height: 280px;
+            }
+        }
+
+    </style>
 </head>
+
+
 <body>
-    <h1>PinkPinky </h1>
+
+    <main class="mural">
+
+
+        <!-- =================================================
+             DETALHE DOS CÍRCULOS
+        ================================================== -->
+
+        <div class="bolinhas">
+            <div class="bolinha-1"></div>
+            <div class="bolinha-2"></div>
+        </div>
+
+
+        <!-- =================================================
+             POSTAGEM
+        ================================================== -->
+
+        <textarea
+            id="texto"
+            class="postagem"
+            placeholder=""
+        ></textarea>
+
+
+        <!-- =================================================
+             HASHTAGS + LIKE
+        ================================================== -->
+
+        <div class="linha-acoes">
+
+            <input
+                id="hashtags"
+                class="hashtags-input"
+                type="text"
+                placeholder="hastigs"
+            >
+
+            <button
+                id="likeAtual"
+                class="botao-like"
+                type="button"
+            >
+                like
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             COMENTÁRIOS
+        ================================================== -->
+
+        <section class="comentarios-box">
+
+            <div
+                id="listaComentarios"
+                class="lista-comentarios"
+            ></div>
+
+            <div
+                id="tituloComentarios"
+                class="comentarios-titulo"
+            >
+                comentarios
+            </div>
+
+
+            <div class="novo-comentario">
+
+                <input
+                    id="novoComentario"
+                    type="text"
+                    placeholder="comentário..."
+                >
+
+                <button
+                    type="button"
+                    onclick="adicionarComentario()"
+                >
+                    +
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             EMOJI
+        ================================================== -->
+
+        <div class="emoji-area">
+
+            <input
+                id="emoji"
+                class="emoji"
+                type="text"
+                value="😍"
+                maxlength="2"
+            >
+
+        </div>
+
+
+        <!-- =================================================
+             ERRO
+        ================================================== -->
+
+        <div
+            id="erro"
+            class="erro"
+        ></div>
+
+
+        <!-- Botão invisível usado pelo JS -->
+        <button
+            id="publicar"
+            class="publicar"
+            onclick="publicarPost()"
+        ></button>
+
+    </main>
+
+
+    <script>
+
+        /* =====================================================
+           SUPABASE
+        ===================================================== */
+
+        const SUPABASE_URL =
+            "COLOQUE_AQUI_SUA_URL";
+
+        const SUPABASE_ANON_KEY =
+            "COLOQUE_AQUI_SUA_ANON_KEY";
+
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+
+        /*
+         * Guarda o post que está sendo visualizado.
+         *
+         * A imagem representa uma postagem por vez,
+         * então vamos manter essa lógica.
+         */
+        let postAtual = null;
+
+
+        /* =====================================================
+           ESCAPAR HTML
+        ===================================================== */
+
+        function escapeHTML(texto) {
+
+            if (!texto) {
+                return "";
+            }
+
+            return texto
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+
+        /* =====================================================
+           CARREGAR POSTAGEM
+        ===================================================== */
+
+        async function carregarPost() {
+
+            const { data, error } =
+                await supabaseClient
+                    .from("postagens")
+                    .select("*")
+                    .order("created_at", {
+                        ascending: false
+                    })
+                    .limit(1)
+                    .maybeSingle();
+
+
+            if (error) {
+
+                console.error(error);
+
+                return;
+            }
+
+
+            if (!data) {
+
+                postAtual = null;
+
+                document.getElementById("texto").value = "";
+
+                document.getElementById("hashtags").value = "";
+
+                document.getElementById("emoji").value = "😍";
+
+                document.getElementById("likeAtual").textContent =
+                    "like";
+
+                return;
+            }
+
+
+            postAtual = data;
+
+
+            /*
+             * Texto
+             */
+
+            document.getElementById("texto").value =
+                data.texto || "";
+
+
+            /*
+             * Hashtags
+             */
+
+            document.getElementById("hashtags").value =
+                Array.isArray(data.hashtags)
+                    ? data.hashtags.join(" ")
+                    : "";
+
+
+            /*
+             * Emoji
+             */
+
+            document.getElementById("emoji").value =
+                data.emoji || "😍";
+
+
+            /*
+             * Like
+             */
+
+            document.getElementById("likeAtual").textContent =
+                `like ${data.likes || 0}`;
+
+
+            /*
+             * Comentários
+             */
+
+            mostrarComentarios(
+                Array.isArray(data.comentarios)
+                    ? data.comentarios
+                    : []
+            );
+        }
+
+
+        /* =====================================================
+           MOSTRAR COMENTÁRIOS
+        ===================================================== */
+
+        function mostrarComentarios(comentarios) {
+
+            const lista =
+                document.getElementById(
+                    "listaComentarios"
+                );
+
+
+            if (!comentarios.length) {
+
+                lista.innerHTML = "";
+
+                lista.classList.remove(
+                    "tem-comentarios"
+                );
+
+                return;
+            }
+
+
+            lista.classList.add(
+                "tem-comentarios"
+            );
+
+
+            lista.innerHTML =
+                comentarios
+                    .map(comentario => {
+
+                        return `
+                            <div class="comentario">
+                                ${escapeHTML(comentario)}
+                            </div>
+                        `;
+
+                    })
+                    .join("");
+        }
+
+
+        /* =====================================================
+           PUBLICAR
+        ===================================================== */
+
+        async function publicarPost() {
+
+            const texto =
+                document
+                    .getElementById("texto")
+                    .value
+                    .trim();
+
+
+            const hashtagsTexto =
+                document
+                    .getElementById("hashtags")
+                    .value
+                    .trim();
+
+
+            const emoji =
+                document
+                    .getElementById("emoji")
+                    .value
+                    .trim()
+                    || "😍";
+
+
+            const erro =
+                document.getElementById("erro");
+
+
+            if (!texto) {
+
+                erro.textContent =
+                    "Escreva algo antes de publicar.";
+
+                return;
+            }
+
+
+            erro.textContent = "";
+
+
+            const hashtags =
+                hashtagsTexto
+                    .split(/\s+/)
+                    .filter(Boolean);
+
+
+            const { error } =
+                await supabaseClient
+                    .from("postagens")
+                    .insert({
+
+                        emoji: emoji,
+
+                        texto: texto,
+
+                        hashtags: hashtags,
+
+                        likes: 0,
+
+                        comentarios: []
+
+                    });
+
+
+            if (error) {
+
+                console.error(error);
+
+                erro.textContent =
+                    "Não foi possível publicar.";
+
+                return;
+            }
+
+
+            await carregarPost();
+        }
+
+
+        /* =====================================================
+           LIKE
+        ===================================================== */
+
+        document
+            .getElementById("likeAtual")
+            .addEventListener("click", async function () {
+
+                if (!postAtual) {
+
+                    /*
+                     * Se ainda não existir postagem,
+                     * cria uma automaticamente usando
+                     * o conteúdo atual.
+                     */
+
+                    await publicarPost();
+
+                    return;
+                }
+
+
+                const novoLike =
+                    (postAtual.likes || 0) + 1;
+
+
+                const { error } =
+                    await supabaseClient
+                        .from("postagens")
+                        .update({
+                            likes: novoLike
+                        })
+                        .eq("id", postAtual.id);
+
+
+                if (error) {
+
+                    console.error(error);
+
+                    return;
+                }
+
+
+                postAtual.likes = novoLike;
+
+
+                document
+                    .getElementById("likeAtual")
+                    .textContent =
+                    `like ${novoLike}`;
+            });
+
+
+        /* =====================================================
+           COMENTÁRIO
+        ===================================================== */
+
+        async function adicionarComentario() {
+
+            if (!postAtual) {
+                return;
+            }
+
+
+            const input =
+                document.getElementById(
+                    "novoComentario"
+                );
+
+
+            const texto =
+                input.value.trim();
+
+
+            if (!texto) {
+                return;
+            }
+
+
+            const comentarios =
+                Array.isArray(postAtual.comentarios)
+                    ? [...postAtual.comentarios]
+                    : [];
+
+
+            comentarios.push(texto);
+
+
+            const { error } =
+                await supabaseClient
+                    .from("postagens")
+                    .update({
+                        comentarios: comentarios
+                    })
+                    .eq("id", postAtual.id);
+
+
+            if (error) {
+
+                console.error(error);
+
+                return;
+            }
+
+
+            postAtual.comentarios =
+                comentarios;
+
+
+            input.value = "";
+
+
+            mostrarComentarios(
+                comentarios
+            );
+        }
+
+
+        /* =====================================================
+           CTRL + ENTER PUBLICA
+        ===================================================== */
+
+        document
+            .getElementById("texto")
+            .addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.ctrlKey &&
+                        event.key === "Enter"
+                    ) {
+
+                        publicarPost();
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           ENTER NO COMENTÁRIO
+        ===================================================== */
+
+        document
+            .getElementById("novoComentario")
+            .addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (event.key === "Enter") {
+
+                        adicionarComentario();
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           SUPABASE REALTIME
+        ===================================================== */
+
+        supabaseClient
+            .channel("mural-postagens")
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "postagens"
+                },
+                function () {
+
+                    carregarPost();
+
+                }
+            )
+            .subscribe();
+
+
+        /* =====================================================
+           INICIALIZAÇÃO
+        ===================================================== */
+
+        carregarPost();
+
+    </script>
+
 </body>
+
 </html>
+
