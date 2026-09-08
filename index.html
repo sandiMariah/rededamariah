@@ -1,1531 +1,193 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mural Anônimo</title>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-
-        /* =====================================================
-           RESET
-        ===================================================== */
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        /* =====================================================
-           VARIÁVEIS
-        ===================================================== */
-
-        :root {
-            --azul-principal: #69bde8;
-            --azul-claro: #eaf7ff;
-            --azul-muito-claro: #f6fcff;
-            --azul-escuro: #287aa8;
-            --texto: #294354;
-            --texto-claro: #708896;
-            --branco: #ffffff;
-            --borda: #c8e8f7;
-            --sombra: 0 12px 35px rgba(55, 145, 190, 0.12);
-        }
-
-
-        /* =====================================================
-           BODY
-        ===================================================== */
-
-        body {
-            min-height: 100vh;
-
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
-
-            color: var(--texto);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #f5fcff 0%,
-                    #eaf7ff 50%,
-                    #f8fdff 100%
-                );
-        }
-
-
-        /* =====================================================
-           CABEÇALHO
-        ===================================================== */
-
-        header {
-            width: 100%;
-
-            padding: 22px 30px;
-
-            background: rgba(255, 255, 255, 0.88);
-
-            border-bottom: 1px solid var(--borda);
-
-            backdrop-filter: blur(10px);
-
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-
-        .header-content {
-            max-width: 950px;
-
-            margin: auto;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-        }
-
-
-        .logo {
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            font-size: 21px;
-
-            font-weight: 700;
-
-            color: var(--azul-escuro);
-        }
-
-
-        .logo-icon {
-            width: 38px;
-            height: 38px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 12px;
-
-            background: var(--azul-claro);
-
-            font-size: 21px;
-        }
-
-
-        .anonimo {
-            padding: 7px 13px;
-
-            border-radius: 20px;
-
-            background: #eef9ff;
-
-            color: var(--azul-escuro);
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           CONTAINER PRINCIPAL
-        ===================================================== */
-
-        main {
-            width: 100%;
-
-            max-width: 950px;
-
-            margin: 40px auto;
-
-            padding: 0 20px;
-        }
-
-
-        /* =====================================================
-           TÍTULO
-        ===================================================== */
-
-        .intro {
-            text-align: center;
-
-            margin-bottom: 28px;
-        }
-
-
-        .intro h1 {
-            font-size: 32px;
-
-            color: var(--texto);
-
-            margin-bottom: 8px;
-        }
-
-
-        .intro p {
-            color: var(--texto-claro);
-
-            font-size: 15px;
-        }
-
-
-        /* =====================================================
-           CARD DE NOVA POSTAGEM
-        ===================================================== */
-
-        .novo-post {
-            background: var(--branco);
-
-            border: 1px solid var(--borda);
-
-            border-radius: 28px;
-
-            padding: 24px;
-
-            box-shadow: var(--sombra);
-
-            margin-bottom: 30px;
-        }
-
-
-        .novo-post-topo {
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 16px;
-        }
-
-
-        .avatar {
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #dff4ff,
-                    #bde6f8
-                );
-
-            font-size: 20px;
-        }
-
-
-        .novo-post-topo strong {
-            display: block;
-
-            font-size: 15px;
-        }
-
-
-        .novo-post-topo span {
-            color: var(--texto-claro);
-
-            font-size: 12px;
-        }
-
-
-        textarea {
-            width: 100%;
-
-            min-height: 125px;
-
-            resize: vertical;
-
-            border: 2px solid #d9edf7;
-
-            border-radius: 18px;
-
-            padding: 16px;
-
-            outline: none;
-
-            font-family: inherit;
-
-            font-size: 15px;
-
-            color: var(--texto);
-
-            background: #fbfeff;
-
-            transition: 0.2s;
-        }
-
-
-        textarea:focus {
-            border-color: var(--azul-principal);
-
-            background: white;
-
-            box-shadow:
-                0 0 0 4px rgba(105, 189, 232, 0.12);
-        }
-
-
-        textarea::placeholder {
-            color: #9bb0bb;
-        }
-
-
-        /* =====================================================
-           OPÇÕES DA POSTAGEM
-        ===================================================== */
-
-        .post-opcoes {
-            display: flex;
-
-            gap: 10px;
-
-            margin-top: 12px;
-        }
-
-
-        .input-hashtags {
-            flex: 1;
-
-            border: 2px solid #d9edf7;
-
-            border-radius: 13px;
-
-            padding: 11px 14px;
-
-            outline: none;
-
-            color: var(--texto);
-
-            font-family: inherit;
-
-            background: #fbfeff;
-        }
-
-
-        .input-emoji {
-            width: 60px;
-
-            text-align: center;
-
-            border: 2px solid #d9edf7;
-
-            border-radius: 13px;
-
-            font-size: 20px;
-
-            outline: none;
-
-            background: #fbfeff;
-        }
-
-
-        .publicar {
-            margin-top: 15px;
-
-            width: 100%;
-
-            border: none;
-
-            border-radius: 14px;
-
-            padding: 13px;
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #69bde8,
-                    #4ba9da
-                );
-
-            font-size: 15px;
-
-            font-weight: 700;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-
-            box-shadow:
-                0 6px 15px rgba(75, 169, 218, 0.22);
-        }
-
-
-        .publicar:hover {
-            transform: translateY(-1px);
-
-            box-shadow:
-                0 9px 20px rgba(75, 169, 218, 0.3);
-        }
-
-
-        .publicar:active {
-            transform: translateY(0);
-        }
-
-
-        /* =====================================================
-           FEED
-        ===================================================== */
-
-        #posts {
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 22px;
-        }
-
-
-        /* =====================================================
-           POST
-        ===================================================== */
-
-        .post {
-            background: white;
-
-            border: 1px solid var(--borda);
-
-            border-radius: 28px;
-
-            padding: 22px;
-
-            box-shadow: var(--sombra);
-        }
-
-
-        .post-header {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            margin-bottom: 15px;
-        }
-
-
-        .post-autor {
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-        }
-
-
-        .post-avatar {
-            width: 40px;
-            height: 40px;
-
-            display: flex;
-
-            justify-content: center;
-            align-items: center;
-
-            border-radius: 50%;
-
-            background: var(--azul-claro);
-
-            font-size: 19px;
-        }
-
-
-        .post-autor-info strong {
-            font-size: 14px;
-
-            display: block;
-        }
-
-
-        .post-autor-info span {
-            font-size: 11px;
-
-            color: var(--texto-claro);
-        }
-
-
-        .post-emoji {
-            font-size: 25px;
-        }
-
-
-        /* =====================================================
-           TEXTO DO POST
-        ===================================================== */
-
-        .post-texto {
-            padding: 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #f7fcff,
-                    #eef9ff
-                );
-
-            border: 1px solid #d8eef8;
-
-            border-radius: 20px;
-
-            font-size: 17px;
-
-            line-height: 1.6;
-
-            white-space: pre-wrap;
-
-            word-break: break-word;
-        }
-
-
-        /* =====================================================
-           HASHTAGS + LIKE
-        ===================================================== */
-
-        .post-acoes {
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            margin-top: 13px;
-        }
-
-
-        .hashtags {
-            flex: 1;
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 6px;
-        }
-
-
-        .tag {
-            padding: 6px 10px;
-
-            border-radius: 20px;
-
-            background: #eaf7ff;
-
-            color: #398db8;
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-
-        .like-btn {
-            border: 1px solid #cbe8f6;
-
-            background: white;
-
-            color: #4e7588;
-
-            border-radius: 13px;
-
-            padding: 8px 13px;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-
-        .like-btn:hover {
-            background: #fff1f4;
-
-            border-color: #ffd3dc;
-        }
-
-
-        /* =====================================================
-           COMENTÁRIOS
-        ===================================================== */
-
-        .comentarios {
-            margin-top: 18px;
-
-            border: 1px solid #dceef7;
-
-            border-radius: 20px;
-
-            padding: 17px;
-
-            background: #fcfeff;
-        }
-
-
-        .comentarios-header {
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            margin-bottom: 12px;
-        }
-
-
-        .comentarios-header strong {
-            font-size: 14px;
-        }
-
-
-        .contador {
-            color: var(--texto-claro);
-
-            font-size: 12px;
-        }
-
-
-        .lista-comentarios {
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 8px;
-
-            max-height: 190px;
-
-            overflow-y: auto;
-
-            margin-bottom: 12px;
-        }
-
-
-        .comentario {
-            background: #eef8fd;
-
-            border-radius: 12px;
-
-            padding: 9px 11px;
-
-            font-size: 13px;
-
-            color: #4b6877;
-
-            word-break: break-word;
-        }
-
-
-        .sem-comentarios {
-            color: #9aaeb8;
-
-            text-align: center;
-
-            padding: 10px;
-
-            font-size: 13px;
-        }
-
-
-        .comentario-form {
-            display: flex;
-
-            gap: 8px;
-        }
-
-
-        .comentario-form input {
-            flex: 1;
-
-            border: 1px solid #cfe7f3;
-
-            border-radius: 12px;
-
-            padding: 10px;
-
-            outline: none;
-
-            font-family: inherit;
-
-            color: var(--texto);
-
-            background: white;
-        }
-
-
-        .comentario-form input:focus {
-            border-color: var(--azul-principal);
-        }
-
-
-        .comentario-form button {
-            border: none;
-
-            border-radius: 12px;
-
-            padding: 0 15px;
-
-            background: var(--azul-principal);
-
-            color: white;
-
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-
-        /* =====================================================
-           ESTADO VAZIO
-        ===================================================== */
-
-        .vazio {
-            text-align: center;
-
-            background: white;
-
-            border: 1px dashed #b9ddec;
-
-            border-radius: 25px;
-
-            padding: 45px 20px;
-
-            color: var(--texto-claro);
-        }
-
-
-        .vazio .icone {
-            font-size: 35px;
-
-            margin-bottom: 10px;
-        }
-
-
-        /* =====================================================
-           CARREGANDO
-        ===================================================== */
-
-        .carregando {
-            text-align: center;
-
-            color: var(--texto-claro);
-
-            padding: 30px;
-        }
-
-
-        /* =====================================================
-           RESPONSIVIDADE
-        ===================================================== */
-
-        @media (max-width: 600px) {
-
-            header {
-                padding: 17px 18px;
-            }
-
-
-            .header-content {
-                width: 100%;
-            }
-
-
-            .anonimo {
-                display: none;
-            }
-
-
-            main {
-                margin: 25px auto;
-
-                padding: 0 12px;
-            }
-
-
-            .intro h1 {
-                font-size: 26px;
-            }
-
-
-            .novo-post,
-            .post {
-                padding: 17px;
-
-                border-radius: 22px;
-            }
-
-
-            .post-opcoes {
-                flex-wrap: wrap;
-            }
-
-
-            .input-hashtags {
-                width: 100%;
-
-                flex-basis: 100%;
-            }
-
-
-            .input-emoji {
-                width: 60px;
-            }
-
-
-            .post-acoes {
-                align-items: flex-start;
-            }
-
-
-            .like-btn {
-                white-space: nowrap;
-            }
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mural Anônimo</title>
+  
+  <!-- SDK oficial do Supabase via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #f4f4f9; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    h1 { margin-bottom: 20px; color: #333; }
+    
+    #feed { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 450px; }
+
+    /* Card com visual similar ao print */
+    .card {
+      background: white;
+      border: 2px solid #222;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 4px 4px 0px #222;
+    }
+
+    .box {
+      border: 2px solid #222;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .emoji-box { font-size: 2.5rem; background: #fff; }
+    .texto-box { font-size: 1.1rem; color: #222; text-align: left; }
+    .hashtags-box { color: #2563eb; font-size: 0.9rem; font-weight: bold; }
+
+    .likes-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .btn-like {
+      background: #ff4757;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-like:active { transform: scale(0.95); }
+
+    .comentarios-box {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lista-comentarios {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .lista-comentarios li {
+      background: #f1f2f6;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .form-comentario { display: flex; gap: 6px; }
+    .form-comentario input {
+      flex: 1;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .form-comentario button {
+      padding: 6px 12px;
+      border: none;
+      background: #222;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
-
 <body>
 
-
-    <!-- =====================================================
-         CABEÇALHO
-    ====================================================== -->
-
-    <header>
-
-        <div class="header-content">
-
-            <div class="logo">
-
-                <div class="logo-icon">
-                    💬
-                </div>
-
-                <span>
-                    Mural Anônimo
-                </span>
-
-            </div>
-
-
-            <div class="anonimo">
-                🔒 100% anônimo
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- =====================================================
-         CONTEÚDO
-    ====================================================== -->
-
-    <main>
-
-
-        <div class="intro">
-
-            <h1>
-                O que está passando pela sua cabeça?
-            </h1>
-
-            <p>
-                Compartilhe seus pensamentos com a comunidade.
-            </p>
-
-        </div>
-
-
-        <!-- =================================================
-             NOVA POSTAGEM
-        ================================================== -->
-
-        <section class="novo-post">
-
-
-            <div class="novo-post-topo">
-
-                <div class="avatar">
-                    👤
-                </div>
-
-                <div>
-
-                    <strong>
-                        Você está anônimo
-                    </strong>
-
-                    <span>
-                        Sua identidade não será exibida
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <textarea
-                id="texto"
-                placeholder="Escreva alguma coisa..."
-            ></textarea>
-
-
-            <div class="post-opcoes">
-
-                <input
-                    id="hashtags"
-                    class="input-hashtags"
-                    type="text"
-                    placeholder="#hashtags #opcional"
-                >
-
-
-                <input
-                    id="emoji"
-                    class="input-emoji"
-                    type="text"
-                    value="😍"
-                    maxlength="2"
-                >
-
-            </div>
-
-
-            <button
-                class="publicar"
-                onclick="publicarPost()"
-            >
-                Publicar anonimamente
-            </button>
-
-
-            <div
-                id="erro"
-                style="
-                    text-align:center;
-                    color:#d65c6c;
-                    font-size:13px;
-                    margin-top:10px;
-                "
-            ></div>
-
-
-        </section>
-
-
-        <!-- =================================================
-             FEED
-        ================================================== -->
-
-        <section id="posts">
-
-            <div class="carregando">
-                Carregando mural...
-            </div>
-
-        </section>
-
-
-    </main>
-
-
-    <script>
-
-
-        /* =====================================================
-           SUPABASE
-        ===================================================== */
-
-        const SUPABASE_URL =
-            "COLOQUE_AQUI_SUA_URL";
-
-
-        const SUPABASE_ANON_KEY =
-            "COLOQUE_AQUI_SUA_ANON_KEY";
-
-
-        const supabaseClient =
-            supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
-
-
-        /* =====================================================
-           ESCAPAR HTML
-        ===================================================== */
-
-        function escapeHTML(texto) {
-
-            if (!texto) return "";
-
-            return texto
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&#039;");
-        }
-
-
-        /* =====================================================
-           CARREGAR POSTS
-        ===================================================== */
-
-        async function carregarPosts() {
-
-            const container =
-                document.getElementById("posts");
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("postagens")
-                    .select("*")
-                    .order(
-                        "created_at",
-                        {
-                            ascending: false
-                        }
-                    );
-
-
-            if (error) {
-
-                console.error(error);
-
-                container.innerHTML = `
-                    <div class="vazio">
-                        <div class="icone">😕</div>
-                        Não foi possível carregar o mural.
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            if (!data || data.length === 0) {
-
-                container.innerHTML = `
-                    <div class="vazio">
-
-                        <div class="icone">
-                            💭
-                        </div>
-
-                        <strong>
-                            O mural está vazio
-                        </strong>
-
-                        <p style="margin-top:5px;">
-                            Seja a primeira pessoa a compartilhar alguma coisa!
-                        </p>
-
-                    </div>
-                `;
-
-                return;
-            }
-
-
-            container.innerHTML =
-                data
-                    .map(post => criarPost(post))
-                    .join("");
-        }
-
-
-        /* =====================================================
-           CRIAR HTML DO POST
-        ===================================================== */
-
-        function criarPost(post) {
-
-            const comentarios =
-                Array.isArray(post.comentarios)
-                    ? post.comentarios
-                    : [];
-
-
-            const hashtags =
-                Array.isArray(post.hashtags)
-                    ? post.hashtags
-                    : [];
-
-
-            const tagsHTML =
-                hashtags
-                    .map(tag => `
-                        <span class="tag">
-                            ${escapeHTML(tag)}
-                        </span>
-                    `)
-                    .join("");
-
-
-            const comentariosHTML =
-                comentarios.length
-                    ?
-
-                    comentarios
-                        .map(comentario => `
-                            <div class="comentario">
-                                ${escapeHTML(comentario)}
-                            </div>
-                        `)
-                        .join("")
-
-                    :
-
-                    `
-                        <div class="sem-comentarios">
-                            Nenhum comentário ainda 💬
-                        </div>
-                    `;
-
-
-            const data =
-                new Date(post.created_at);
-
-
-            const tempo =
-                data.toLocaleString(
-                    "pt-BR",
-                    {
-                        day: "2-digit",
-                        month: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                );
-
-
-            return `
-
-                <article class="post">
-
-
-                    <div class="post-header">
-
-
-                        <div class="post-autor">
-
-
-                            <div class="post-avatar">
-                                ${escapeHTML(post.emoji || "😍")}
-                            </div>
-
-
-                            <div class="post-autor-info">
-
-                                <strong>
-                                    Pessoa anônima
-                                </strong>
-
-                                <span>
-                                    ${tempo}
-                                </span>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="post-emoji">
-                            💭
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="post-texto">
-                        ${escapeHTML(post.texto)}
-                    </div>
-
-
-                    <div class="post-acoes">
-
-
-                        <div class="hashtags">
-
-                            ${tagsHTML}
-
-                        </div>
-
-
-                        <button
-                            class="like-btn"
-                            onclick="
-                                darLike(
-                                    ${post.id},
-                                    ${post.likes || 0}
-                                )
-                            "
-                        >
-
-                            ❤️
-                            ${post.likes || 0}
-
-                        </button>
-
-
-                    </div>
-
-
-                    <div class="comentarios">
-
-
-                        <div class="comentarios-header">
-
-                            <strong>
-                                💬 Comentários
-                            </strong>
-
-                            <span class="contador">
-                                ${comentarios.length}
-                            </span>
-
-                        </div>
-
-
-                        <div class="lista-comentarios">
-
-                            ${comentariosHTML}
-
-                        </div>
-
-
-                        <div class="comentario-form">
-
-                            <input
-                                id="comentario-${post.id}"
-                                type="text"
-                                placeholder="Escreva um comentário..."
-                            >
-
-
-                            <button
-                                onclick="
-                                    adicionarComentario(
-                                        ${post.id}
-                                    )
-                                "
-                            >
-                                Enviar
-                            </button>
-
-                        </div>
-
-
-                    </div>
-
-
-                </article>
-
-            `;
-        }
-
-
-        /* =====================================================
-           PUBLICAR
-        ===================================================== */
-
-        async function publicarPost() {
-
-            const textoInput =
-                document.getElementById("texto");
-
-
-            const hashtagsInput =
-                document.getElementById("hashtags");
-
-
-            const emojiInput =
-                document.getElementById("emoji");
-
-
-            const erro =
-                document.getElementById("erro");
-
-
-            const texto =
-                textoInput.value.trim();
-
-
-            if (!texto) {
-
-                erro.textContent =
-                    "Escreva alguma coisa antes de publicar.";
-
-                return;
-            }
-
-
-            erro.textContent = "";
-
-
-            const hashtags =
-                hashtagsInput.value
-                    .trim()
-                    .split(/\s+/)
-                    .filter(Boolean);
-
-
-            const emoji =
-                emojiInput.value.trim()
-                || "😍";
-
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from("postagens")
-                    .insert({
-
-                        emoji: emoji,
-
-                        texto: texto,
-
-                        hashtags: hashtags,
-
-                        likes: 0,
-
-                        comentarios: []
-
-                    });
-
-
-            if (error) {
-
-                console.error(error);
-
-                erro.textContent =
-                    "Não foi possível publicar a postagem.";
-
-                return;
-            }
-
-
-            textoInput.value = "";
-
-            hashtagsInput.value = "";
-
-            emojiInput.value = "😍";
-
-
-            carregarPosts();
-        }
-
-
-        /* =====================================================
-           LIKE
-        ===================================================== */
-
-        async function darLike(
-            id,
-            likesAtuais
-        ) {
-
-            const novoValor =
-                (likesAtuais || 0) + 1;
-
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from("postagens")
-                    .update({
-                        likes: novoValor
-                    })
-                    .eq("id", id);
-
-
-            if (error) {
-
-                console.error(error);
-
-                return;
-            }
-
-
-            carregarPosts();
-        }
-
-
-        /* =====================================================
-           COMENTÁRIO
-        ===================================================== */
-
-        async function adicionarComentario(id) {
-
-            const input =
-                document.getElementById(
-                    `comentario-${id}`
-                );
-
-
-            const texto =
-                input.value.trim();
-
-
-            if (!texto) {
-                return;
-            }
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("postagens")
-                    .select("comentarios")
-                    .eq("id", id)
-                    .single();
-
-
-            if (error) {
-
-                console.error(error);
-
-                return;
-            }
-
-
-            const comentarios =
-                Array.isArray(data.comentarios)
-                    ? [...data.comentarios]
-                    : [];
-
-
-            comentarios.push(texto);
-
-
-            const resultado =
-                await supabaseClient
-                    .from("postagens")
-                    .update({
-                        comentarios: comentarios
-                    })
-                    .eq("id", id);
-
-
-            if (resultado.error) {
-
-                console.error(
-                    resultado.error
-                );
-
-                return;
-            }
-
-
-            input.value = "";
-
-
-            carregarPosts();
-        }
-
-
-        /* =====================================================
-           ENTER PARA COMENTAR
-        ===================================================== */
-
-        document.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (
-                    event.target.matches(
-                        ".comentario-form input"
-                    )
-                    &&
-                    event.key === "Enter"
-                ) {
-
-                    const id =
-                        event.target.id
-                            .replace(
-                                "comentario-",
-                                ""
-                            );
-
-
-                    adicionarComentario(
-                        Number(id)
-                    );
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           SUPABASE REALTIME
-        ===================================================== */
-
-        supabaseClient
-            .channel("mural-em-tempo-real")
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "postagens"
-                },
-                function() {
-
-                    carregarPosts();
-
-                }
-            )
-            .subscribe();
-
-
-        /* =====================================================
-           INICIALIZAÇÃO
-        ===================================================== */
-
-        carregarPosts();
-
-    </script>
-
+  <h1>Mural Anônimo 💌</h1>
+  <div id="feed">Carregando postagens...</div>
+
+  <script>
+    // 1. Configuração do Supabase (substitua pelas suas credenciais)
+    const SUPABASE_URL = "https://hgumdydrkmzgafrvjqbh.supabase.co/rest/v1/";
+    const SUPABASE_KEY = "sb_publishable_H1xVO9Pqwn3YiUskf0AH-g_SymfidXW";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const feedEl = document.getElementById("feed");
+
+    // 2. Função para buscar os posts no banco
+    async function carregarPostagens() {
+      const { data: postagens, error } = await supabaseClient
+        .from("postagens")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        feedEl.innerHTML = "<p>Erro ao carregar postagens.</p>";
+        console.error(error);
+        return;
+      }
+
+      if (postagens.length === 0) {
+        feedEl.innerHTML = "<p>Nenhuma postagem encontrada.</p>";
+        return;
+      }
+
+      feedEl.innerHTML = "";
+      postagens.forEach(post => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const hashtagsTexto = post.hashtags ? post.hashtags.join(" ") : "";
+        const listaComentariosHTML = (post.comentarios || [])
+          .map(c => `<li>${c}</li>`)
+          .join("");
+
+        card.innerHTML = `
+          <div class="box emoji-box">${post.emoji || '❤️'}</div>
+          <div class="box texto-box">${post.texto}</div>
+          <div class="box hashtags-box">${hashtagsTexto}</div>
+          
+          <div class="box likes-box">
+            <span>❤️ ${post.likes || 0} Likes</span>
+            <button class="btn-like" onclick="curtirPost(${post.id}, ${post.likes || 0})">Curtir</button>
+          </div>
+
+          <div class="box comentarios-box">
+            <strong>Comentários:</strong>
+            <ul class="lista-comentarios">${listaComentariosHTML}</ul>
+            <form class="form-comentario" onsubmit="adicionarComentario(event, ${post.id}, ${JSON.stringify(post.comentarios || []).replace(/"/g, '&quot;')})">
+              <input type="text" placeholder="Comentar..." required />
+              <button type="submit">Enviar</button>
+            </form>
+          </div>
+        `;
+
+        feedEl.appendChild(card);
+      });
+    }
+
+    // 3. Função para aumentar os likes
+    async function curtirPost(id, likesAtuais) {
+      const { error } = await supabaseClient
+        .from("postagens")
+        .update({ likes: likesAtuais + 1 })
+        .eq("id", id);
+
+      if (!error) carregarPostagens();
+    }
+
+    // 4. Função para adicionar um novo comentário no array
+    async function adicionarComentario(event, id, comentariosAtuais) {
+      event.preventDefault();
+      const input = event.target.querySelector("input");
+      const novoComentario = input.value.trim();
+
+      if (!novoComentario) return;
+
+      const { error } = await supabaseClient
+        .from("postagens")
+        .update({ comentarios: [...comentariosAtuais, novoComentario] })
+        .eq("id", id);
+
+      if (!error) carregarPostagens();
+    }
+
+    // Inicializa a busca ao carregar a página
+    carregarPostagens();
+  </script>
 </body>
-
 </html>
