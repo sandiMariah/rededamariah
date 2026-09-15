@@ -1,252 +1,559 @@
-* { 
-    box-sizing: border-box; 
-    margin: 0; padding: 0; 
-    font-family: Georgia, 'Times New Roman', Times, serif; 
+/* =========================================
+   CONFIGURAÇÕES GERAIS
+========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-body{ 
-    background-color: #E5EBF8;
-    padding: 20px; 
-    display: flex; 
-    flex-direction: column; 
+body {
+    background: #F6FFFA;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    color: #8B4C41;
 }
 
-h1 { 
-    margin-bottom: 16px; 
-    color: #A946CE; 
+
+/* =========================================
+   TÍTULO
+========================================= */
+
+h1 {
+    width: 100%;
+    max-width: 1100px;
+    margin-bottom: 25px;
+
+    color: #8B4C41;
+    font-size: 2.3rem;
 }
 
-/* Container para os botões do topo */
+
+/* =========================================
+   BOTÕES DO TOPO
+========================================= */
+
 .acoes-topo {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+    width: 100%;
+    max-width: 1100px;
+
+    display: flex;
+    gap: 15px;
+
+    margin-bottom: 30px;
 }
 
 .btn-acao {
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  color: white;
+    border: none;
+    padding: 12px 22px;
+
+    border-radius: 25px;
+
+    font-size: 0.95rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
 }
 
-.btn-acao:active { 
-  transform: scale(0.98); 
+
+/* Botão novo post */
+
+.btn-novo-post {
+    background: #DA7D91;
+    color: #F6FFFA;
+
+    box-shadow: 0 5px 12px rgba(139, 76, 65, 0.15);
 }
 
-.btn-novo-post { 
-  background: #F4A4F5; 
-  box-shadow: 2px 2px 0px #9878FF; 
+.btn-novo-post:hover {
+    transform: translateY(-2px);
 }
 
-.btn-pesquisar { 
-  background: #9878FF; 
-  box-shadow: 2px 2px 0px #F4A4F5; 
+
+/* Botão pesquisar */
+
+.btn-pesquisar {
+    background: #A0BBB2;
+    color: #F6FFFA;
+
+    box-shadow: 0 5px 12px rgba(139, 76, 65, 0.15);
 }
 
-/* Containers dinâmicos */
-#form-container, #search-container {
-  width: 100%;
-  max-width: 450px;
-  margin-bottom: 20px;
+.btn-pesquisar:hover {
+    transform: translateY(-2px);
 }
 
-/* Estilo genérico dos cards de formulários */
+.btn-acao:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================
+   CONTAINERS DE FORMULÁRIO
+========================================= */
+
+#form-container,
+#search-container {
+    width: 100%;
+    max-width: 600px;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================
+   CARD DO FORMULÁRIO
+========================================= */
+
 .form-card {
-  background: #E5EBF8;
-  border: 2px solid #A946CE;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 4px 4px 0px #A946CE;
+    background: #E6E6DB;
+
+    border: none;
+    border-radius: 20px;
+
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    box-shadow: 0 8px 25px rgba(139, 76, 65, 0.12);
 }
 
-.form-card input, .form-card textarea {
-  width: 100%;
-  padding: 8px 12px;
-  border: 2px solid #9878FF;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  background: #E5EBF8;
+
+/* Inputs */
+
+.form-card input,
+.form-card textarea {
+    width: 100%;
+
+    padding: 12px 15px;
+
+    border: 1px solid #A0BBB2;
+    border-radius: 12px;
+
+    font-size: 0.95rem;
+
+    background: #F6FFFA;
+
+    color: #8B4C41;
+
+    outline: none;
 }
 
-.form-card textarea { 
-  resize: vertical; 
-  min-height: 70px; 
+.form-card input:focus,
+.form-card textarea:focus {
+    border: 2px solid #DA7D91;
 }
+
+.form-card textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+
+/* Botões do formulário */
 
 .form-acoes {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
+
 
 .btn-cancelar {
-  background: #E5EBF8;
-  border: 2px solid #9878FF;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #A946CE;
+    background: #F6FFFA;
+
+    border: 1px solid #A0BBB2;
+
+    padding: 10px 18px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    color: #8B4C41;
 }
+
 
 .btn-enviar {
-  background: #A946CE;
-  color: white;
-  border: 2px solid #A946CE;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+    background: #DA7D91;
+
+    color: #F6FFFA;
+
+    border: none;
+
+    padding: 10px 20px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-weight: bold;
 }
 
-/* Feedback do Filtro Ativo */
+
+/* =========================================
+   FILTRO ATIVO
+========================================= */
+
 .filtro-ativo {
-  background: #BEFFE9;
-  border: 2px solid #9878FF;
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 450px;
-  font-weight: bold;
-  color: #A946CE;
+    width: 100%;
+    max-width: 1100px;
+
+    background: #E6E6DB;
+
+    border-left: 5px solid #DA7D91;
+
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    margin-bottom: 25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-weight: bold;
+
+    color: #8B4C41;
+
+    box-shadow: 0 5px 15px rgba(139, 76, 65, 0.08);
 }
+
 
 .btn-limpar-filtro {
-  background: transparent;
-  border: none;
-  color: #A946CE;
-  font-weight: bold;
-  cursor: pointer;
+    background: none;
+
+    border: none;
+
+    color: #DA7D91;
+
+    font-weight: bold;
+
+    cursor: pointer;
 }
 
-/* Feed das postagens */
-#feed { 
-  display: flex; 
-  flex-direction: row; 
-  gap: 20px; 
-  width: 100%; 
-  flex-wrap: wrap;
+
+/* =========================================
+   FEED DAS POSTAGENS
+========================================= */
+
+#feed {
+    width: 100%;
+    max-width: 1100px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 25px;
+
+    align-items: start;
 }
 
-/* Card da Postagem */
+
+/* =========================================
+   CARD DA POSTAGEM
+========================================= */
+
 .card {
-  background: #E5EBF8;
-  border: 2px solid #A946CE;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: 4px 4px 0px #A946CE;
+    background: #F6FFFA;
+
+    border: none;
+
+    border-radius: 22px;
+
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    min-height: 350px;
+
+    box-shadow:
+        0 8px 25px rgba(139, 76, 65, 0.12);
+
+    transition: 0.25s;
 }
+
+
+/* Efeito ao passar o mouse */
+
+.card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 15px 30px rgba(139, 76, 65, 0.18);
+}
+
+
+/* =========================================
+   CAIXAS INTERNAS DO CARD
+========================================= */
 
 .box {
-  border: 2px solid #A946CE;
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
+    border: none;
+
+    border-radius: 16px;
+
+    padding: 14px;
+
+    text-align: center;
 }
 
-.emoji-box { 
-  font-size: 2.5rem; 
-  background: #BEFFE9; 
+
+/* Emoji */
+
+.emoji-box {
+    background: #E6E6DB;
+
+    font-size: 3rem;
+
+    min-height: 100px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 }
 
-.texto-box { 
-  font-size: 1.1rem; 
-  color: #6B4280; 
-  text-align: left; 
+
+/* Texto */
+
+.texto-box {
+    background: transparent;
+
+    font-size: 1rem;
+
+    color: #8B4C41;
+
+    text-align: left;
+
+    line-height: 1.6;
+
+    padding: 5px;
 }
 
-.hashtags-box { 
-  color: #9878FF; 
-  font-size: 0.9rem; 
-  font-weight: bold; 
+
+/* Hashtags */
+
+.hashtags-box {
+    background: #F6FFFA;
+
+    color: #DA7D91;
+
+    font-size: 0.85rem;
+
+    font-weight: bold;
+
+    text-align: left;
+
+    padding: 5px;
 }
+
+
+/* =========================================
+   ÁREA DE LIKES
+========================================= */
 
 .likes-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-  color: #A946CE;
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 10px 5px;
+
+    color: #8B4C41;
+
+    font-weight: bold;
 }
+
 
 .btn-like {
-  background: #F4A4F5;
-  color: #A946CE;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
+    background: #DA7D91;
+
+    color: #F6FFFA;
+
+    border: none;
+
+    padding: 8px 15px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    transition: 0.2s;
 }
 
-.btn-like:active { 
-  transform: scale(0.95); 
+
+.btn-like:hover {
+    transform: scale(1.05);
 }
 
-/* Estilo para quando o botão estiver desabilitado/curtido */
+
+.btn-like:active {
+    transform: scale(0.95);
+}
+
+
+/* Quando já foi curtido */
+
 .btn-like:disabled {
-  background: #BEFFE9;
-  color: #9878FF;
-  cursor: not-allowed;
-  transform: none;
+    background: #A0BBB2;
+
+    color: #F6FFFA;
+
+    cursor: not-allowed;
+
+    transform: none;
 }
+
+
+/* =========================================
+   COMENTÁRIOS
+========================================= */
 
 .comentarios-box {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+    background: #E6E6DB;
+
+    border-radius: 16px;
+
+    padding: 12px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    text-align: left;
 }
+
+
+/* Lista de comentários */
 
 .lista-comentarios {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 8px;
+    list-style: none;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
 }
+
 
 .lista-comentarios li {
-  background: #BEFFE9;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  color: #6B4280;
+    background: #F6FFFA;
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
+
+    font-size: 0.85rem;
+
+    color: #8B4C41;
 }
 
-.form-comentario { 
-  display: flex; 
-  gap: 6px; 
+
+/* =========================================
+   FORMULÁRIO DE COMENTÁRIO
+========================================= */
+
+.form-comentario {
+    display: flex;
+
+    gap: 8px;
 }
+
 
 .form-comentario input {
-  flex: 1;
-  padding: 6px;
-  border: 1px solid #9878FF;
-  border-radius: 6px;
-  background: #E5EBF8;
+    flex: 1;
+
+    padding: 9px 12px;
+
+    border: 1px solid #A0BBB2;
+
+    border-radius: 20px;
+
+    background: #F6FFFA;
+
+    color: #8B4C41;
+
+    outline: none;
 }
 
+
+.form-comentario input:focus {
+    border: 2px solid #DA7D91;
+}
+
+
 .form-comentario button {
-  padding: 6px 12px;
-  border: none;
-  background: #A946CE;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
+    padding: 9px 15px;
+
+    border: none;
+
+    background: #8B4C41;
+
+    color: #F6FFFA;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+
+.form-comentario button:hover {
+    background: #DA7D91;
+}
+
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .acoes-topo {
+        flex-direction: column;
+    }
+
+    .btn-acao {
+        width: 100%;
+    }
+
+    #feed {
+        grid-template-columns: 1fr;
+    }
+
 }
