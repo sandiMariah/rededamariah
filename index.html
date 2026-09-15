@@ -243,7 +243,7 @@
       if (!novoComentario) return;
 
       const { error } = await supabaseClient
-        .from("postagens")
+        .from("slaps")
         .update({ comentarios: [...comentariosAtuais, novoComentario] })
         .eq("id", id);
 
