@@ -5,15 +5,16 @@
 }
 
 body{ 
-    background-color: #F6EAF8;
-    padding: 20px; display: flex; 
+    background-color: #E5EBF8;
+    padding: 20px; 
+    display: flex; 
     flex-direction: column; 
     align-items: center;
 }
 
 h1 { 
     margin-bottom: 16px; 
-    color: #9C3A9F; 
+    color: #A946CE; 
 }
 
 /* Container para os botões do topo */
@@ -32,16 +33,19 @@ h1 {
   cursor: pointer;
   color: white;
 }
-.btn-acao:active { transform: scale(0.98); }
+
+.btn-acao:active { 
+  transform: scale(0.98); 
+}
 
 .btn-novo-post { 
-  background: #FAC75A; 
-  box-shadow: 2px 2px 0px #9D96F6; 
+  background: #F4A4F5; 
+  box-shadow: 2px 2px 0px #9878FF; 
 }
 
 .btn-pesquisar { 
-  background: #9D96F6; 
-  box-shadow: 2px 2px 0px #FAC75A; 
+  background: #9878FF; 
+  box-shadow: 2px 2px 0px #F4A4F5; 
 }
 
 /* Containers dinâmicos */
@@ -53,26 +57,29 @@ h1 {
 
 /* Estilo genérico dos cards de formulários */
 .form-card {
-  background: #FFF0FF;
-  border: 2px solid #9C3A9F;
+  background: #E5EBF8;
+  border: 2px solid #A946CE;
   border-radius: 16px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 4px 4px 0px #9C3A9F;
+  box-shadow: 4px 4px 0px #A946CE;
 }
 
 .form-card input, .form-card textarea {
   width: 100%;
   padding: 8px 12px;
-  border: 2px solid #9D96F6;
+  border: 2px solid #9878FF;
   border-radius: 8px;
   font-size: 0.95rem;
-  background: #F6EAF8;
+  background: #E5EBF8;
 }
 
-.form-card textarea { resize: vertical; min-height: 70px; }
+.form-card textarea { 
+  resize: vertical; 
+  min-height: 70px; 
+}
 
 .form-acoes {
   display: flex;
@@ -81,19 +88,19 @@ h1 {
 }
 
 .btn-cancelar {
-  background: #E8E4FF;
-  border: 2px solid #9D96F6;
+  background: #E5EBF8;
+  border: 2px solid #9878FF;
   padding: 8px 14px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  color: #5D57A8;
+  color: #A946CE;
 }
 
 .btn-enviar {
-  background: #C936AE;
+  background: #A946CE;
   color: white;
-  border: 2px solid #9C3A9F;
+  border: 2px solid #A946CE;
   padding: 8px 14px;
   border-radius: 8px;
   cursor: pointer;
@@ -102,8 +109,8 @@ h1 {
 
 /* Feedback do Filtro Ativo */
 .filtro-ativo {
-  background: #E8E4FF;
-  border: 2px solid #9D96F6;
+  background: #BEFFE9;
+  border: 2px solid #9878FF;
   padding: 8px 12px;
   border-radius: 8px;
   margin-bottom: 16px;
@@ -113,39 +120,40 @@ h1 {
   width: 100%;
   max-width: 450px;
   font-weight: bold;
-  color: #5D57A8;
+  color: #A946CE;
 }
 
 .btn-limpar-filtro {
   background: transparent;
   border: none;
-  color: #C936AE;
+  color: #A946CE;
   font-weight: bold;
   cursor: pointer;
 }
 
+/* Feed das postagens */
 #feed { 
   display: flex; 
   flex-direction: column; 
-  gap: 20px; 
+  gap: 32px; 
   width: 100%; 
   max-width: 450px; 
 }
 
 /* Card da Postagem */
 .card {
-  background: #FFF0FF;
-  border: 2px solid #9C3A9F;
+  background: #E5EBF8;
+  border: 2px solid #A946CE;
   border-radius: 16px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 4px 4px 0px #9C3A9F;
+  box-shadow: 4px 4px 0px #A946CE;
 }
 
 .box {
-  border: 2px solid #9C3A9F;
+  border: 2px solid #A946CE;
   border-radius: 12px;
   padding: 12px;
   text-align: center;
@@ -153,17 +161,17 @@ h1 {
 
 .emoji-box { 
   font-size: 2.5rem; 
-  background: #FFF0FF; 
+  background: #BEFFE9; 
 }
 
 .texto-box { 
   font-size: 1.1rem; 
-  color: #5A3A5C; 
+  color: #6B4280; 
   text-align: left; 
 }
 
 .hashtags-box { 
-  color: #7169D6; 
+  color: #9878FF; 
   font-size: 0.9rem; 
   font-weight: bold; 
 }
@@ -173,24 +181,27 @@ h1 {
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  color: #9C3A9F;
+  color: #A946CE;
 }
 
 .btn-like {
-  background: #C936AE;
-  color: white;
+  background: #F4A4F5;
+  color: #A946CE;
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
 }
-.btn-like:active { transform: scale(0.95); }
+
+.btn-like:active { 
+  transform: scale(0.95); 
+}
 
 /* Estilo para quando o botão estiver desabilitado/curtido */
 .btn-like:disabled {
-  background: #C8E267;
-  color: #65752A;
+  background: #BEFFE9;
+  color: #9878FF;
   cursor: not-allowed;
   transform: none;
 }
@@ -211,11 +222,11 @@ h1 {
 }
 
 .lista-comentarios li {
-  background: #E8E4FF;
+  background: #BEFFE9;
   padding: 6px 10px;
   border-radius: 6px;
   font-size: 0.85rem;
-  color: #5A3A5C;
+  color: #6B4280;
 }
 
 .form-comentario { 
@@ -226,15 +237,15 @@ h1 {
 .form-comentario input {
   flex: 1;
   padding: 6px;
-  border: 1px solid #9D96F6;
+  border: 1px solid #9878FF;
   border-radius: 6px;
-  background: #FFF0FF;
+  background: #E5EBF8;
 }
 
 .form-comentario button {
   padding: 6px 12px;
   border: none;
-  background: #9C3A9F;
+  background: #A946CE;
   color: white;
   border-radius: 6px;
   cursor: pointer;
