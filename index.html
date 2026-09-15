@@ -4,25 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="index.css">
-  <title>Mural Anônimo</title>
+  <title>TheSlap</title>
   
   <!-- SDK oficial do Supabase via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-  <h1>Mural</h1>
+  <h1>TheSlap</h1>
   
   <div class="acoes-topo">
-    <button class="btn-acao btn-novo-post" onclick="toggleFormulario()">+ Nova Postagem</button>
-    <button class="btn-acao btn-pesquisar" onclick="togglePesquisa()">🔍 Pesquisar</button>
+    <button class="btn-acao btn-novo-post" onclick="toggleFormulario()">Novo Slap</button>
+    <button class="btn-acao btn-pesquisar" onclick="togglePesquisa()">Pesquisar</button>
   </div>
   
   <div id="form-container"></div>
   <div id="search-container"></div>
   <div id="filtro-container"></div>
 
-  <div id="feed">Carregando postagens...</div>
+  <div id="feed">Carregando splas...</div>
 
   <script>
     const SUPABASE_URL = "https://hgumdydrkmzgafrvjqbh.supabase.co"; 
@@ -60,7 +60,7 @@
 
       formContainerEl.innerHTML = `
         <form class="form-card" onsubmit="criarPostagem(event)">
-          <input type="text" id="input-emoji" placeholder="Emoji (ex: 😍, 🚀, 🤡)" maxlength="50" required />
+          <input type="text" id="input-emoji" placeholder="Emoji" maxlength="50" required />
           <textarea id="input-texto" placeholder="O que você está pensando?" required></textarea>
           <input type="text" id="input-hashtags" placeholder="Hashtags separadas por espaço (ex: #dev #supabase)" />
           
@@ -131,7 +131,7 @@
         .insert([{ emoji, texto, hashtags }]);
 
       if (error) {
-        alert("Erro ao criar postagem!");
+        alert("Erro ao criar slap!");
         console.error(error);
         return;
       }
@@ -143,7 +143,7 @@
     // Busca os posts no banco (com ou sem filtro)
     async function carregarPostagens() {
       let query = supabaseClient
-        .from("postagens")
+        .from("slaps")
         .select("*")
         .order("created_at", { ascending: false });
 
@@ -163,13 +163,13 @@
       const { data: postagens, error } = await query;
 
       if (error) {
-        feedEl.innerHTML = "<p>Erro ao carregar postagens.</p>";
+        feedEl.innerHTML = "<p>Erro ao carregar slaps.</p>";
         console.error(error);
         return;
       }
 
       if (postagens.length === 0) {
-        feedEl.innerHTML = "<p>Nenhuma postagem encontrada com esses critérios.</p>";
+        feedEl.innerHTML = "<p>Nenhum slap encontrado com esses critérios.</p>";
         return;
       }
 
