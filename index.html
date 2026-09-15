@@ -131,7 +131,7 @@
         .insert([{ emoji, texto, hashtags }]);
 
       if (error) {
-        alert("Erro ao criar slap!");
+        alert("Erro ao criar postagem!");
         console.error(error);
         return;
       }
@@ -143,7 +143,7 @@
     // Busca os posts no banco (com ou sem filtro)
     async function carregarPostagens() {
       let query = supabaseClient
-        .from("slaps")
+        .from("postagens")
         .select("*")
         .order("created_at", { ascending: false });
 
@@ -163,13 +163,13 @@
       const { data: postagens, error } = await query;
 
       if (error) {
-        feedEl.innerHTML = "<p>Erro ao carregar slaps.</p>";
+        feedEl.innerHTML = "<p>Erro ao carregar postagens.</p>";
         console.error(error);
         return;
       }
 
       if (postagens.length === 0) {
-        feedEl.innerHTML = "<p>Nenhum slap encontrado com esses critérios.</p>";
+        feedEl.innerHTML = "<p>Nenhuma postagem encontrada com esses critérios.</p>";
         return;
       }
 
@@ -243,7 +243,7 @@
       if (!novoComentario) return;
 
       const { error } = await supabaseClient
-        .from("slaps")
+        .from("postagens")
         .update({ comentarios: [...comentariosAtuais, novoComentario] })
         .eq("id", id);
 
