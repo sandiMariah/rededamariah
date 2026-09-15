@@ -67,7 +67,8 @@ h1 {
 .btn-novo-post {
     background: #DA7D91;
     color: #F6FFFA;
-
+    padding: 15px 92px;
+   
     box-shadow: 0 5px 12px rgba(139, 76, 65, 0.15);
 }
 
@@ -81,7 +82,7 @@ h1 {
 .btn-pesquisar {
     background: #A0BBB2;
     color: #F6FFFA;
-
+    padding: 15px 62px;
     box-shadow: 0 5px 12px rgba(139, 76, 65, 0.15);
 }
 
@@ -113,16 +114,12 @@ h1 {
 
 .form-card {
     background: #E6E6DB;
-
     border: none;
     border-radius: 20px;
-
     padding: 25px;
-
     display: flex;
     flex-direction: column;
     gap: 14px;
-
     box-shadow: 0 8px 25px rgba(139, 76, 65, 0.12);
 }
 
@@ -444,6 +441,77 @@ h1 {
     gap: 10px;
 
     text-align: left;
+}
+
+/* =========================================
+   BOTÃO DE COMENTÁRIOS
+========================================= */
+
+.btn-comentarios {
+    width: 100%;
+    padding: 10px 15px;
+    background: #E6E6DB;
+    color: #8B4C41;
+    border: 1px solid #E6E6DB;
+    border-radius: 20px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.btn-comentarios:hover {
+    background: #A0BBB2;
+    color: #F6FFFA;
+}
+
+
+/* =========================================
+   COMENTÁRIOS
+========================================= */
+
+.comentarios-box {
+    background: #E6E6DB;
+
+    border-radius: 15px;
+
+    padding: 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    text-align: left;
+}
+
+
+/* =========================================
+   LISTA DE COMENTÁRIOS
+========================================= */
+
+.lista-comentarios {
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.lista-comentarios li {
+    background: #F6FFFA;
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
+
+    font-size: 0.85rem;
+
+    color: #8B4C41;
 }
 
 

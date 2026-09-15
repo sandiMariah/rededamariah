@@ -205,20 +205,55 @@
             </button>
           </div>
 
-          <div class="box comentarios-box">
-            <strong>Comentários:</strong>
-            <ul class="lista-comentarios">${listaComentariosHTML}</ul>
-            <form class="form-comentario" onsubmit="adicionarComentario(event, ${post.id}, ${JSON.stringify(post.comentarios || []).replace(/"/g, '&quot;')})">
-              <input type="text" placeholder="Comentar..." required />
-              <button type="submit">Enviar</button>
-            </form>
-          </div>
-        `;
+        <button 
+  class="btn-comentarios" 
+  onclick="mostrarComentarios(${post.id})"
+>
+ mostrar comentários
+</button>
+
+<div 
+  id="comentarios-${post.id}" 
+  class="comentarios-box"
+  style="display: none;"
+>
+  <strong>Comentários:</strong>
+
+  <ul class="lista-comentarios">
+    ${listaComentariosHTML}
+  </ul>
+
+  <form 
+    class="form-comentario" 
+    onsubmit="adicionarComentario(event, ${post.id}, ${JSON.stringify(post.comentarios || []).replace(/"/g, '&quot;')})"
+  >
+    <input 
+      type="text" 
+      placeholder="comentar..." 
+      required
+    />
+
+    <button type="submit">
+      Enviar
+    </button>
+  </form>
+</div> `;
 
         feedEl.appendChild(card);
       });
     }
+    function mostrarComentarios(id) {
+  const comentarios = document.getElementById("comentarios-" + id);
+  const botao = comentarios.previousElementSibling;
 
+  if (comentarios.style.display === "none") {
+    comentarios.style.display = "flex";
+    botao.innerHTML = "ocultar comentários";
+  } else {
+    comentarios.style.display = "none";
+    botao.innerHTML = "mostrar comentários";
+  }
+}
     async function curtirPost(id, likesAtuais) {
       // Bloqueio de segurança no código antes da chamada da API
       const curtidasLocais = getCurtidasLocais();
