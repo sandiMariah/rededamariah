@@ -35,8 +35,8 @@ h1 {
 }
 .btn-acao:active { transform: scale(0.98); }
 
-.btn-novo-post { background: #2563eb; box-shadow: 2px 2px 0px #1e40af; }
-.btn-pesquisar { background: #8b5cf6; box-shadow: 2px 2px 0px #6d28d9; }
+.btn-novo-post { background: #F2E0A4; box-shadow: 2px 2px 0px #CAC5E5; }
+.btn-pesquisar { background: #CAC5E5; box-shadow: 2px 2px 0px #F2E0A4; }
 
 /* Containers dinâmicos */
 #form-container, #search-container {
